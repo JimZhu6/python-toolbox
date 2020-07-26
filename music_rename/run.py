@@ -29,17 +29,6 @@ def batch_rename(path, name_dict, suffix_tuple):
                         # 从尾部开始查找
                         new_name = replace_last(
                             old_name, key, name_dict[key])
-                        # 从头部寻找第一个' - '，用于区分歌曲名与专辑名
-                        first_column_index = new_name.find(' - ')
-                        # 从尾部开始寻找第一个' - '，用于区分歌手名与专辑名
-                        last_column_index = filename.rfind(' - ')
-                        head = new_name[0:first_column_index+3]
-                        # 将多余空格去掉
-                        middle = new_name[first_column_index+3:last_column_index]
-                        middle = middle.replace(' ', '')
-                        tail = new_name[last_column_index:len(new_name)]
-                        new_name = head+middle+tail
-
                         # 替换文件名称
                         os.rename(old_name, new_name)
                         print(f"{filename!r} rename-> {new_name!r}  done.")
@@ -60,16 +49,40 @@ def replace_last(source_string, replace_what, replace_with):
     head, _sep, tail = source_string.rpartition(replace_what)
     return head + replace_with + tail
 
+def replace_middle_space(path):
+    """
+    替换文件名专辑栏字符串的空格\r\n
+    @path: 原字符串\r\n
+    """
+    # 切换到 path 路径下面
+    os.chdir(path)
+    filenames = os.listdir(path=path)
+    for filename in filenames:
+        # 从头部寻找第一个' - '，用于区分歌曲名与专辑名
+        first_column_index = filename.find(' - ')
+        # 从尾部开始寻找第一个' - '，用于区分歌手名与专辑名
+        last_column_index = filename.rfind(' - ')
+        head = filename[0:first_column_index+3]
+        # 将多余空格去掉
+        middle = filename[first_column_index +
+                            3:last_column_index]
+        middle = middle.replace(' ', '')
+        tail = filename[last_column_index:len(filename)]
+        new_name= head+middle+tail
+        os.rename(filename, new_name)
+        print(f"{filename!r} rename-> {new_name!r}  done.")
 
 def start_rename():
-    path_tuple = ('F:/musicBG/AGA', 'F:/musicBG/Deemo',
-                  'F:/musicBG/陈慧琳', 'F:/musicBG/陈奕迅#1', 'F:/musicBG/陈奕迅#2', 'F:/musicBG/古巨基', 'F:/musicBG/李克勤',
-                  'F:/musicBG/梁静茹', 'F:/musicBG/卢巧音', 'F:/musicBG/其他中文歌手#1', 'F:/musicBG/其他中文歌手#2', 'F:/musicBG/其他中文歌手#3',
-                  'F:/musicBG/其他中文歌手#4', 'F:/musicBG/卫兰', 'F:/musicBG/谢安琪', 'F:/musicBG/薛凯琪', 'F:/musicBG/杨千嬅', 'F:/musicBG/张敬轩', 'F:/musicBG/周杰伦')
+    # path_tuple = ('F:/musicBG/AGA', 'F:/musicBG/Deemo',
+    #               'F:/musicBG/陈慧琳', 'F:/musicBG/陈奕迅#1', 'F:/musicBG/陈奕迅#2', 'F:/musicBG/古巨基', 'F:/musicBG/李克勤',
+    #               'F:/musicBG/梁静茹', 'F:/musicBG/卢巧音', 'F:/musicBG/其他中文歌手#1', 'F:/musicBG/其他中文歌手#2', 'F:/musicBG/其他中文歌手#3',
+    #               'F:/musicBG/其他中文歌手#4', 'F:/musicBG/卫兰', 'F:/musicBG/谢安琪', 'F:/musicBG/薛凯琪', 'F:/musicBG/杨千嬅', 'F:/musicBG/张敬轩', 'F:/musicBG/周杰伦')
+    path_tuple = ('F:/musicBG/其他外文歌手#1','F:/musicBG/其他外文歌手#2')
     name_dict = ndict
     suffix_tuple = ('.flac',)
     for path in path_tuple:
-        batch_rename(path=path, name_dict=name_dict, suffix_tuple=suffix_tuple)
+        # batch_rename(path=path, name_dict=name_dict, suffix_tuple=suffix_tuple)
+        replace_middle_space(path=path)
     input('Press the enter key to exit.')
 
 
