@@ -128,4 +128,9 @@ ndict = {
     'Wanting': '曲婉婷',
     'Will Pan': '潘玮柏',
     'Yoga Lin': '林宥嘉',
+    'Myolie Wu': '胡杏儿',
+    'Deep Ng': '吴浩康',
+    'Angela Hui': '许靖韵',
+    'Gladys Li': '李靖筠',
+    'Chan Wing Him': '陈咏谦',
 }

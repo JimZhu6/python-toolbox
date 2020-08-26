@@ -25,6 +25,7 @@ def batch_rename(path, name_dict, suffix_tuple):
                 for key in name_dict:
                     flag = True
                     if old_name.rfind(key, last_column_index, len(old_name)) > -1:
+                        print(key)
                         # 查找是否文件名是否存在要替换的关键字
                         # 从尾部开始查找
                         new_name = replace_last(
@@ -73,15 +74,12 @@ def replace_middle_space(path):
         print(f"{filename!r} rename-> {new_name!r}  done.")
 
 def start_rename():
-    # path_tuple = ('F:/musicBG/AGA', 'F:/musicBG/Deemo',
-    #               'F:/musicBG/陈慧琳', 'F:/musicBG/陈奕迅#1', 'F:/musicBG/陈奕迅#2', 'F:/musicBG/古巨基', 'F:/musicBG/李克勤',
-    #               'F:/musicBG/梁静茹', 'F:/musicBG/卢巧音', 'F:/musicBG/其他中文歌手#1', 'F:/musicBG/其他中文歌手#2', 'F:/musicBG/其他中文歌手#3',
-    #               'F:/musicBG/其他中文歌手#4', 'F:/musicBG/卫兰', 'F:/musicBG/谢安琪', 'F:/musicBG/薛凯琪', 'F:/musicBG/杨千嬅', 'F:/musicBG/张敬轩', 'F:/musicBG/周杰伦')
-    path_tuple = ('F:/musicBG/其他外文歌手#1','F:/musicBG/其他外文歌手#2')
+    path_tuple = ('F:/musicBG/新增#1',)
     name_dict = ndict
     suffix_tuple = ('.flac',)
     for path in path_tuple:
-        # batch_rename(path=path, name_dict=name_dict, suffix_tuple=suffix_tuple)
+        batch_rename(path=path, name_dict=name_dict, suffix_tuple=suffix_tuple)
+    for path in path_tuple:
         replace_middle_space(path=path)
     input('Press the enter key to exit.')
 
