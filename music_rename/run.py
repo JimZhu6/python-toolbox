@@ -189,13 +189,31 @@ def rename_music_by_info(music_list):
       print_and_log(f"{file!r} rename_music_by_info-> {new_name!r}  done.")
 
 
+def swap_artist_album_in_filename(music_list):
+  """
+  将文件名根据"-"划分为三个数据，分别是“歌曲名”、“歌手”、“专辑名”。然后将“歌手”和“专辑名”位置互调，并且将他们的分隔符"-"修改为" - "。\r\n
+  @music_list: 音乐文件列表
+  """
+  for file in music_list:
+    # 将文件的路径和文件名分开，并暂存路径
+    path, filename = os.path.split(file)
+    parts = filename.split('-')
+    if len(parts) == 3:
+      song, artist, albumSuffix = parts
+      # 将album从尾部开始分割，分割符为"."，只分割一次
+      album, suffix = albumSuffix.rsplit('.', 1)
+      new_name = f'{song} - {album.strip()} - {artist.strip()}.{suffix}'
+      os.rename(file, os.path.join(path, new_name))
+      print_and_log(f"{filename!r} swap_artist_album_in_filename-> {new_name!r}  done.")
+
+
 def print_and_log(message):
     """
     打印信息并写入日志文件\r\n
     @message: 要打印的信息
     """
     # 日志文件路径
-    log_file = 'F:/log.txt'
+    log_file = 'F:/Music/log.txt'
     # log_file = ''
     print(message)
     if log_file == '':
@@ -206,20 +224,24 @@ def print_and_log(message):
 
 def event():
     # 要处理的文件夹路径
-    path_tuple = 'F:/Music'
+    path_tuple = 'F:/Music/AATMP'
     # 艺术家名称转换字典
     name_dict = ndict
     # 需要处理的文件后缀名
     suffix_tuple = ('.flac','.mp3',)
 
-
+    # p1
     music_list = get_music_list(path=path_tuple, suffix_tuple=suffix_tuple)
-    export_music_csv(music_list=music_list, csv_file_path='F:/music.csv')
-    # batch_rename(music_list=music_list, name_dict=name_dict)
-    # replace_middle_space(music_list=music_list)
-    # replace_underline(music_list=music_list)
+    # export_music_csv(music_list=music_list, csv_file_path='F:/Music/music.csv')
+    swap_artist_album_in_filename(music_list=music_list)
 
-    update_music_info(music_list=music_list)
+    # p2
+    music_list = get_music_list(path=path_tuple, suffix_tuple=suffix_tuple)
+    batch_rename(music_list=music_list, name_dict=name_dict)
+    replace_middle_space(music_list=music_list)
+    replace_underline(music_list=music_list)
+
+    # update_music_info(music_list=music_list)
     # rename_music_by_info(music_list=music_list)
     input('Press the enter key to exit.')
 
